@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
-import { Container, Button, Box, Grid, Stack, Typography } from "@mui/material";
+import {
+  Container,
+  Button,
+  Box,
+  Grid,
+  Stack,
+  Typography,
+  Alert,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData, postData } from "../service/slice";
 
@@ -19,6 +27,8 @@ const BookDetailPage = () => {
 
   const loading = useSelector((state) => state.books.loading);
   const book = useSelector((state) => state.books.detail);
+  const detailError = useSelector((state) => state.books.detailError);
+  console.log(detailError);
   useEffect(() => {
     dispatch(postData(addingBook));
   }, [dispatch, addingBook]);
@@ -29,6 +39,11 @@ const BookDetailPage = () => {
 
   return (
     <Container>
+      {detailError && (
+        <Alert severity="error">
+          {detailError} {bookId}
+        </Alert>
+      )}
       {loading ? (
         <Box sx={{ textAlign: "center", color: "primary.main" }}>
           <ClipLoader color="#inherit" size={150} loading={true} />

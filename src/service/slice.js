@@ -7,6 +7,7 @@ const initialState = {
   detail: null,
   loading: false,
   error: null,
+  detailError: null,
 };
 
 export const getBooks = createAsyncThunk(
@@ -56,12 +57,15 @@ export const bookSlice = createSlice({
       .addCase(postData.pending, (state) => {
         state.loading = true;
       })
-      .addCase(postData.fulfilled, (state) => {
+      .addCase(postData.fulfilled, (state, action) => {
         state.loading = false;
+        state.detailError = null;
+        console.log(state.error);
       })
       .addCase(postData.rejected, (state, action) => {
-        state.error = action.error.message;
+        state.detailError = action.error.message;
         state.loading = false;
+        console.log(state.error)
       });
     builder
       .addCase(fetchData.pending, (state) => {
